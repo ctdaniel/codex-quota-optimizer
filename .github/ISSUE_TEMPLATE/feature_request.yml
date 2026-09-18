@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest an optimization rule, helper, benchmark, or documentation improvement.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What usage waste does this solve?
+      description: Describe the concrete Codex behavior that currently wastes context, reasoning, tool work, or verification effort.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Explain the smallest reliable policy or tool change.
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Correctness / safety tradeoffs
+      description: Explain how the proposal avoids saving usage at the cost of correctness.
