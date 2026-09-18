@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible problem with the Skill or helper scripts.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Codex client, OS, repo type, and relevant model/reasoning setting if known.
+      placeholder: "Codex CLI / macOS / TypeScript monorepo / Terra Low"
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      description: Keep examples free of private credentials or proprietary source code.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
