@@ -1,0 +1,54 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1020"/>
+      <stop offset="0.55" stop-color="#111B35"/>
+      <stop offset="1" stop-color="#132C35"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="350" y1="60" x2="940" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#83F4D3"/>
+      <stop offset="0.5" stop-color="#7AA7FF"/>
+      <stop offset="1" stop-color="#B795FF"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="blur" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="360" rx="28" fill="url(#bg)"/>
+  <circle cx="1050" cy="80" r="150" fill="#4FD4A4" opacity="0.06"/>
+  <circle cx="110" cy="310" r="180" fill="#7C82FF" opacity="0.06"/>
+  <g opacity="0.6">
+    <path d="M670 108H1080" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <path d="M670 162H1080" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <path d="M670 216H1080" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <path d="M670 270H1080" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  </g>
+  <g transform="translate(76 70)">
+    <rect x="0" y="0" width="90" height="90" rx="24" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.14"/>
+    <path d="M24 58L44 29L58 45L69 28" stroke="url(#accent)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="69" cy="28" r="5" fill="#83F4D3"/>
+  </g>
+  <text x="190" y="115" fill="white" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="42" font-weight="760">Codex Quota Optimizer</text>
+  <text x="190" y="160" fill="#B8C4D9" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21">Spend less allowance. Keep the engineering quality.</text>
+  <g transform="translate(190 195)">
+    <rect width="142" height="38" rx="19" fill="#83F4D3" fill-opacity="0.12" stroke="#83F4D3" stroke-opacity="0.34"/>
+    <text x="71" y="25" text-anchor="middle" fill="#A8FFE7" font-family="Inter, ui-sans-serif, system-ui" font-size="14" font-weight="650">MODEL ROUTING</text>
+    <rect x="154" width="158" height="38" rx="19" fill="#7AA7FF" fill-opacity="0.12" stroke="#7AA7FF" stroke-opacity="0.34"/>
+    <text x="233" y="25" text-anchor="middle" fill="#BBD1FF" font-family="Inter, ui-sans-serif, system-ui" font-size="14" font-weight="650">CONTEXT CONTROL</text>
+    <rect x="324" width="147" height="38" rx="19" fill="#B795FF" fill-opacity="0.12" stroke="#B795FF" stroke-opacity="0.34"/>
+    <text x="397.5" y="25" text-anchor="middle" fill="#DCCAFF" font-family="Inter, ui-sans-serif, system-ui" font-size="14" font-weight="650">FOCUSED TESTS</text>
+  </g>
+  <g transform="translate(690 82)">
+    <rect width="390" height="196" rx="22" fill="#07111D" fill-opacity="0.72" stroke="#FFFFFF" stroke-opacity="0.12"/>
+    <text x="28" y="38" fill="#8090AA" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">TASK</text>
+    <text x="28" y="67" fill="white" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">Fix a local UI regression</text>
+    <path d="M28 89H362" stroke="#FFFFFF" stroke-opacity="0.08"/>
+    <circle cx="39" cy="119" r="7" fill="#83F4D3"/>
+    <text x="58" y="124" fill="#D9E5F5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">smallest adequate model</text>
+    <circle cx="39" cy="150" r="7" fill="#7AA7FF"/>
+    <text x="58" y="155" fill="#D9E5F5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">targeted repo context</text>
+    <circle cx="39" cy="181" r="7" fill="#B795FF"/>
+    <text x="58" y="186" fill="#D9E5F5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">focused verification first</text>
+  </g>
+</svg>
