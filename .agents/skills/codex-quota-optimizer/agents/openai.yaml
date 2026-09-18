@@ -1,0 +1,9 @@
+interface:
+  display_name: "Codex Quota Optimizer"
+  short_description: "Save Codex Plus/Pro usage with smarter model routing, focused context, minimal edits, and layered verification."
+  icon_small: "../assets/icon.svg"
+  icon_large: "../assets/icon.svg"
+  brand_color: "#4FD4A4"
+  default_prompt: "Optimize this Codex task for the lowest practical usage while preserving correctness and acceptance criteria."
+policy:
+  allow_implicit_invocation: true
