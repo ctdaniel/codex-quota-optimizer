@@ -8,7 +8,8 @@
 
 <p align="center">
   <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-111827.svg"></a>
-  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">\n  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
+  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">
+  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
   <img alt="Plus & Pro" src="https://img.shields.io/badge/ChatGPT-Plus%20%2F%20Pro-111827.svg">
   <img alt="No telemetry" src="https://img.shields.io/badge/telemetry-none-0F766E.svg">
 </p>
@@ -47,9 +48,19 @@ Codex 的额度并不只花在“写代码”上。很多消耗其实来自：**
 
 ## 安装
 
-### 方式 A｜全局安装 · 推荐
+### 方式 A｜一行命令安装 Skill · 推荐
 
-一次安装，在所有 Codex 项目里使用：
+通过跨 Agent 的 Skills CLI 直接安装：
+
+```bash
+npx skills add ctdaniel/codex-quota-optimizer --skill codex-quota-optimizer
+```
+
+这是 Codex 用户最快的安装方式，也能让这个 Skill 进入更广泛的 Skills 生态发现路径。
+
+### 方式 B｜直接全局安装
+
+如果你希望继续使用仓库自带安装脚本：
 
 ```bash
 git clone https://github.com/ctdaniel/codex-quota-optimizer.git
@@ -65,7 +76,7 @@ Skill 会被安装到：
 
 Codex 通常会自动检测新 Skill；如果没有出现，重启 Codex 即可。
 
-### 方式 B｜项目级安装
+### 方式 C｜项目级安装
 
 把仓库中的核心 Skill：
 
@@ -299,7 +310,9 @@ codex-quota-optimizer/
 - [ ] **Usage Audit**：任务结束展示本次避免了哪些无效工作
 - [ ] 自动识别不同框架最合适的定向测试
 - [x] Plugin 打包：同时支持 Skill 直装与 Plugin 分发
-- [ ] HOL Codex Plugin Catalog 收录\n- [ ] Benchmark：对比默认工作流和优化工作流
+- [ ] HOL Codex Plugin Catalog 收录
+- [x] Skills CLI 一行命令安装
+- [ ] Benchmark：对比默认工作流和优化工作流
 
 欢迎提交 Issue / PR。参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
 
