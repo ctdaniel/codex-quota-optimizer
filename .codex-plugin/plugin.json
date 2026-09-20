@@ -1,0 +1,36 @@
+{
+  "name": "codex-quota-optimizer",
+  "version": "0.1.0",
+  "description": "Reduce avoidable Codex usage with task-aware model routing, focused context, minimal changes, and layered verification.",
+  "author": {
+    "name": "Daniel Chen",
+    "url": "https://github.com/ctdaniel"
+  },
+  "homepage": "https://github.com/ctdaniel/codex-quota-optimizer",
+  "repository": "https://github.com/ctdaniel/codex-quota-optimizer",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "quota",
+    "usage-optimization",
+    "skills",
+    "developer-tools"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Quota Optimizer",
+    "shortDescription": "Spend less Codex allowance without sacrificing engineering quality.",
+    "longDescription": "A lightweight Codex usage governor that routes tasks to the lowest adequate model and reasoning level, limits unnecessary context, keeps patches focused, and verifies in layers.",
+    "developerName": "Daniel Chen",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Optimize this Codex task for the lowest practical usage while preserving correctness.",
+      "Use the smallest reliable context, model, and verification scope for this task."
+    ],
+    "composerIcon": "./assets/icon.svg"
+  }
+}
