@@ -8,7 +8,8 @@
 
 <p align="center">
   <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-111827.svg"></a>
-  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">\n  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
+  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">
+  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
   <img alt="Plus & Pro" src="https://img.shields.io/badge/ChatGPT-Plus%20%2F%20Pro-111827.svg">
   <img alt="No telemetry" src="https://img.shields.io/badge/telemetry-none-0F766E.svg">
 </p>
@@ -47,9 +48,19 @@ It does **not** bypass limits, scrape private quota data, or weaken verification
 
 ## Install
 
-### Option A — Global install · recommended
+### Option A — One-line Skill install · recommended
 
-Use the Skill across all of your Codex projects:
+Install the Skill with the cross-agent Skills CLI:
+
+```bash
+npx skills add ctdaniel/codex-quota-optimizer --skill codex-quota-optimizer
+```
+
+This is the fastest path for Codex users and also makes the Skill discoverable through the wider Skills ecosystem.
+
+### Option B — Direct global install
+
+Use the repository installer across all of your Codex projects:
 
 ```bash
 git clone https://github.com/ctdaniel/codex-quota-optimizer.git
@@ -65,7 +76,7 @@ It installs to:
 
 Codex should detect the Skill automatically. Restart Codex if it does not appear immediately.
 
-### Option B — Repository-local
+### Option C — Repository-local
 
 Copy the canonical Skill source:
 
@@ -297,7 +308,9 @@ codex-quota-optimizer/
 - [ ] End-of-task **Usage Audit** showing avoidable work that was skipped
 - [ ] Framework-aware focused-test discovery
 - [x] Plugin packaging for dual Skill / Plugin distribution
-- [ ] HOL Codex Plugin Catalog listing\n- [ ] Benchmark suite comparing default and optimized workflows
+- [ ] HOL Codex Plugin Catalog listing
+- [x] One-line Skills CLI installation
+- [ ] Benchmark suite comparing default and optimized workflows
 
 Ideas and PRs are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
