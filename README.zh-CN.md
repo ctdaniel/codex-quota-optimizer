@@ -8,14 +8,14 @@
 
 <p align="center">
   <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-111827.svg"></a>
-  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">
+  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">\n  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
   <img alt="Plus & Pro" src="https://img.shields.io/badge/ChatGPT-Plus%20%2F%20Pro-111827.svg">
   <img alt="No telemetry" src="https://img.shields.io/badge/telemetry-none-0F766E.svg">
 </p>
 
 # 少花 Codex 额度，不牺牲工程质量
 
-**Codex Quota Optimizer** 是一个开源 Codex Skill，目标是在保证任务正确完成的前提下，减少 Plus / Pro 用户不必要的额度消耗。
+**Codex Quota Optimizer** 是一个开源 Codex Skill + Plugin，目标是在保证任务正确完成的前提下，减少 Plus / Pro 用户不必要的额度消耗。Skill 直接安装和 Plugin 分发共用同一份核心 Skill 源码。
 
 Codex 的额度并不只花在“写代码”上。很多消耗其实来自：**重复理解仓库、简单任务使用过强模型、推理档位过高、过早运行全量测试、不必要地启用 Subagent，以及超出需求范围的顺手重构。**
 
@@ -67,7 +67,13 @@ Codex 通常会自动检测新 Skill；如果没有出现，重启 Codex 即可�
 
 ### 方式 B｜项目级安装
 
-把下面目录复制到具体项目：
+把仓库中的核心 Skill：
+
+```text
+skills/codex-quota-optimizer/
+```
+
+复制到具体项目的：
 
 ```text
 .agents/skills/codex-quota-optimizer/
@@ -222,7 +228,7 @@ Skill 不依赖它们也能工作，但在较大的项目中它们可以进一�
 ### Compact Repository Snapshot
 
 ```bash
-python .agents/skills/codex-quota-optimizer/scripts/repo_snapshot.py --compact
+python skills/codex-quota-optimizer/scripts/repo_snapshot.py --compact
 ```
 
 快速生成精简项目结构，并自动忽略常见的大目录，例如 `node_modules`、`dist`、`.next`、`coverage`、`.venv`。
@@ -230,7 +236,7 @@ python .agents/skills/codex-quota-optimizer/scripts/repo_snapshot.py --compact
 ### Change Scope Analyzer
 
 ```bash
-python .agents/skills/codex-quota-optimizer/scripts/change_scope.py
+python skills/codex-quota-optimizer/scripts/change_scope.py
 ```
 
 总结当前 Git 改动范围，并给出合理的验证层级建议。
@@ -268,16 +274,18 @@ Plus / Pro 的用量规则可能更新。OpenAI 当前说明，部分受支持�
 
 ```text
 codex-quota-optimizer/
-├── .agents/skills/codex-quota-optimizer/
-│   ├── SKILL.md                  # 核心策略
-│   ├── agents/openai.yaml        # Skill 元数据
-│   ├── references/               # 模型 / 上下文 / 测试详细规则
-│   └── scripts/                  # 可选本地辅助工具
-├── assets/                       # README 视觉资源
-├── examples/                     # 仓库级规则示例
-├── install.sh
-├── uninstall.sh
-├── README.md
+├── plugin.json                    # 可移植 Agent Plugin manifest
+├── .codex-plugin/
+│   └── plugin.json                # Codex 兼容 manifest
+├── skills/
+│   └── codex-quota-optimizer/     # 唯一核心 Skill 源码
+│       ├── SKILL.md
+│       ├── agents/openai.yaml
+│       ├── references/
+│       └── scripts/
+├── assets/                        # Plugin 图标 + README 视觉资源
+├── examples/
+├── install.sh                     # 安装到 ~/.agents/skills
 └── README.zh-CN.md
 ```
 
@@ -290,8 +298,8 @@ codex-quota-optimizer/
 - [ ] **Session Budget**：给探索 / 编码 / 验证分配任务级工作预算
 - [ ] **Usage Audit**：任务结束展示本次避免了哪些无效工作
 - [ ] 自动识别不同框架最合适的定向测试
-- [ ] Plugin 打包，进一步降低安装门槛
-- [ ] Benchmark：对比默认工作流和优化工作流
+- [x] Plugin 打包：同时支持 Skill 直装与 Plugin 分发
+- [ ] HOL Codex Plugin Catalog 收录\n- [ ] Benchmark：对比默认工作流和优化工作流
 
 欢迎提交 Issue / PR。参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
 
