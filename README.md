@@ -8,14 +8,14 @@
 
 <p align="center">
   <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-111827.svg"></a>
-  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">
+  <img alt="Codex Skill" src="https://img.shields.io/badge/Codex-Skill-111827.svg">\n  <img alt="Codex Plugin" src="https://img.shields.io/badge/Codex-Plugin-111827.svg">
   <img alt="Plus & Pro" src="https://img.shields.io/badge/ChatGPT-Plus%20%2F%20Pro-111827.svg">
   <img alt="No telemetry" src="https://img.shields.io/badge/telemetry-none-0F766E.svg">
 </p>
 
 # Spend less Codex allowance. Keep the engineering quality.
 
-**Codex Quota Optimizer** is an open-source Codex Skill that reduces avoidable Plus / Pro usage while keeping the task correct.
+**Codex Quota Optimizer** is an open-source Codex Skill + Plugin that reduces avoidable Plus / Pro usage while keeping the task correct. The same canonical Skill powers both direct Skill installs and Plugin distribution.
 
 Codex does not only spend allowance on writing code. It can also spend it on **re-reading a repository, using a stronger model than necessary, over-reasoning, running broad tests too early, spawning unnecessary subagents, and doing work outside the requested scope**.
 
@@ -67,7 +67,13 @@ Codex should detect the Skill automatically. Restart Codex if it does not appear
 
 ### Option B — Repository-local
 
-Copy this directory into a project:
+Copy the canonical Skill source:
+
+```text
+skills/codex-quota-optimizer/
+```
+
+into your project's:
 
 ```text
 .agents/skills/codex-quota-optimizer/
@@ -220,7 +226,7 @@ The Skill works without these scripts, but they can reduce repository discovery 
 ### Compact repository snapshot
 
 ```bash
-python .agents/skills/codex-quota-optimizer/scripts/repo_snapshot.py --compact
+python skills/codex-quota-optimizer/scripts/repo_snapshot.py --compact
 ```
 
 Produces a compact project map while ignoring common generated/vendor directories such as `node_modules`, `dist`, `.next`, `coverage`, and `.venv`.
@@ -228,7 +234,7 @@ Produces a compact project map while ignoring common generated/vendor directorie
 ### Change-scope analyzer
 
 ```bash
-python .agents/skills/codex-quota-optimizer/scripts/change_scope.py
+python skills/codex-quota-optimizer/scripts/change_scope.py
 ```
 
 Summarizes the current Git change surface and suggests a sensible verification level.
@@ -266,16 +272,18 @@ Plus and Pro usage rules can change. OpenAI currently notes that supported agent
 
 ```text
 codex-quota-optimizer/
-├── .agents/skills/codex-quota-optimizer/
-│   ├── SKILL.md                  # core policy
-│   ├── agents/openai.yaml        # Codex / ChatGPT Skill metadata
-│   ├── references/               # detailed routing + context + test rules
-│   └── scripts/                  # optional local helper tools
-├── assets/                       # README visuals
-├── examples/                     # repository policy example
-├── install.sh
-├── uninstall.sh
-├── README.md
+├── plugin.json                    # portable Agent Plugin manifest
+├── .codex-plugin/
+│   └── plugin.json                # Codex compatibility manifest
+├── skills/
+│   └── codex-quota-optimizer/     # single canonical Skill source
+│       ├── SKILL.md
+│       ├── agents/openai.yaml
+│       ├── references/
+│       └── scripts/
+├── assets/                        # Plugin icon + README visuals
+├── examples/
+├── install.sh                     # installs Skill to ~/.agents/skills
 └── README.zh-CN.md
 ```
 
@@ -288,8 +296,8 @@ codex-quota-optimizer/
 - [ ] **Session Budget** for discovery / coding / verification work
 - [ ] End-of-task **Usage Audit** showing avoidable work that was skipped
 - [ ] Framework-aware focused-test discovery
-- [ ] Optional Plugin packaging for easier distribution
-- [ ] Benchmark suite comparing default and optimized workflows
+- [x] Plugin packaging for dual Skill / Plugin distribution
+- [ ] HOL Codex Plugin Catalog listing\n- [ ] Benchmark suite comparing default and optimized workflows
 
 Ideas and PRs are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
