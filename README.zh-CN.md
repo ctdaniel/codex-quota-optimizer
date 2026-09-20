@@ -46,6 +46,24 @@ Codex 的额度并不只花在“写代码”上。很多消耗其实来自：**
 
 ---
 
+## v0.2｜零阻塞 Usage Governor
+
+> **优化器本身不能成为额外负担。**
+
+v0.2 在原有 Skill 策略上增加了一个轻量的 Usage Governor，但不会挡在 Codex 的正常执行链路前。
+
+| v0.2 能力 | 工作方式 |
+|---|---|
+| **Task Classifier** | 在原本的推理过程中完成 XS → XL 判断；可选 CLI 也可以用本地启发式规则分类 |
+| **Soft Session Budget** | 给探索、推理、验证、Subagent 提供建议范围，但绝不阻塞任务 |
+| **Local Usage Journal** | 只在本地 `~/.cqo` 保存任务级信息；无 Telemetry、不抓私人账户数据 |
+| **Usage Audit** | 记录本地改动面和 CQO 的策略约束，不虚构 Token 节省比例 |
+| **`cqo` CLI** | 可选的 `start / status / audit / history` 查看层；Codex 不依赖它运行 |
+
+CQO 自身不会额外发起模型调用、不会访问网络、不会设置阻塞式 Budget Gate，也不会自动拉起 Subagent。只要正确性需要更多上下文或验证，Codex 应直接继续完成任务。
+
+---
+
 ## 安装
 
 ### 方式 A｜一行命令安装 Skill · 推荐
@@ -57,6 +75,16 @@ npx skills add ctdaniel/codex-quota-optimizer --skill codex-quota-optimizer
 ```
 
 这是 Codex 用户最快的安装方式，也能让这个 Skill 进入更广泛的 Skills 生态发现路径。
+
+Skill 安装后即可使用；本地 `cqo` CLI 完全可选。如果你也希望通过短命令 `cqo` 使用本地任务预算与历史：
+
+```bash
+mkdir -p ~/.local/bin
+chmod +x ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py
+ln -sfn ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py ~/.local/bin/cqo
+```
+
+如果 `~/.local/bin` 不在你的 `PATH` 中，也可以直接通过 Python 运行脚本。
 
 ### 方式 B｜直接全局安装
 
@@ -72,6 +100,12 @@ Skill 会被安装到：
 
 ```text
 ~/.agents/skills/codex-quota-optimizer
+```
+
+同时会创建可选 CLI 快捷命令：
+
+```text
+~/.local/bin/cqo
 ```
 
 Codex 通常会自动检测新 Skill；如果没有出现，重启 Codex 即可。
@@ -232,9 +266,9 @@ Level 4     全量测试 / 发布前 Gate
 
 ---
 
-## 两个辅助脚本
+## 本地辅助工具
 
-Skill 不依赖它们也能工作，但在较大的项目中它们可以进一步减少探索开销。
+Skill 完全不依赖任何辅助脚本；下面这些工具都只是可选、本地运行。
 
 ### Compact Repository Snapshot
 
@@ -252,7 +286,26 @@ python skills/codex-quota-optimizer/scripts/change_scope.py
 
 总结当前 Git 改动范围，并给出合理的验证层级建议。
 
-两个工具都只在本地工作，不上传项目数据。
+### 可选 `cqo` Usage Governor CLI
+
+CLI 不会插入 Codex 的执行链路。只有你希望查看本地任务预算和历史时才需要运行：
+
+```bash
+cqo start "修复结算页 Bug" --mode economy
+cqo status
+cqo audit
+cqo history
+```
+
+它只使用 Python 标准库，不访问网络，任务级状态保存在 `~/.cqo`（或 `CQO_HOME`）。
+
+如果没有安装 `cqo` 快捷命令，也可以直接运行：
+
+```bash
+python ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py status
+```
+
+Repository Snapshot 与 Change Scope 两个脚本同样只在本地运行，不上传项目数据。
 
 ---
 
@@ -294,9 +347,13 @@ codex-quota-optimizer/
 │       ├── agents/openai.yaml
 │       ├── references/
 │       └── scripts/
+│           ├── cqo.py             # 可选本地 Usage Governor CLI
+│           ├── change_scope.py
+│           └── repo_snapshot.py
+├── tests/                         # Python 标准库 CLI 测试
 ├── assets/                        # Plugin 图标 + README 视觉资源
 ├── examples/
-├── install.sh                     # 安装到 ~/.agents/skills
+├── install.sh                     # 安装 Skill + 可选 cqo 快捷命令
 └── README.zh-CN.md
 ```
 
@@ -304,10 +361,10 @@ codex-quota-optimizer/
 
 ## Roadmap
 
-- [ ] 本地 **Usage Journal**：记录任务级使用行为，不抓取私人账户数据
-- [ ] **Task Classifier**：输出任务规模、模型角色、推理档和测试建议
-- [ ] **Session Budget**：给探索 / 编码 / 验证分配任务级工作预算
-- [ ] **Usage Audit**：任务结束展示本次避免了哪些无效工作
+- [x] 本地 **Usage Journal**：记录任务级使用行为，不抓取私人账户数据
+- [x] **Task Classifier**：输出任务规模、模型角色、推理档和测试建议
+- [x] **Soft Session Budget**：给探索 / 编码 / 验证提供非阻塞式预算建议
+- [x] **Usage Audit**：任务结束输出诚实的本地任务级观察
 - [ ] 自动识别不同框架最合适的定向测试
 - [x] Plugin 打包：同时支持 Skill 直装与 Plugin 分发
 - [ ] HOL Codex Plugin Catalog 收录
