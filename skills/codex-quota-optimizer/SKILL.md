@@ -13,6 +13,19 @@ Use the cheapest execution path that can still meet the acceptance criteria. Esc
 
 Never claim an exact remaining quota unless the current Codex client/account exposes it. If quota state matters, tell the user to check `/status` or the usage dashboard, then continue with the best available strategy.
 
+### Zero-friction invariant
+
+The optimizer must not become the overhead.
+
+- Do not make an additional model call just to classify or budget a task.
+- Do not add network requests for CQO classification, journaling, or auditing.
+- Do not put a blocking budget gate in front of normal Codex execution.
+- Do not ask the user for confirmation merely because a soft budget was exceeded.
+- Do not spawn subagents on CQO's behalf.
+- The Skill must remain fully useful when the optional `cqo` CLI is never installed or run.
+
+See `references/zero-friction.md`.
+
 ## 1. Read only what you need
 
 Before broad exploration:
@@ -27,7 +40,7 @@ See `references/context-policy.md` for detailed rules.
 
 ## 2. Classify the task before execution
 
-Assign one class internally:
+Assign one class internally as part of the existing reasoning turn. Do not call another model solely to perform classification.
 
 - **XS** — one-file, mechanical, obvious acceptance criteria.
 - **S** — narrow feature/fix, 1–3 files, known pattern.
@@ -56,13 +69,13 @@ For every non-trivial task, maintain this internal budget:
 - **Edit budget:** minimum files required to satisfy acceptance criteria.
 - **Verification budget:** targeted checks first; broad checks only at the final gate or when evidence demands them.
 
-Default limits are behavioral, not hard numeric quotas:
+These are **soft budgets**, never execution gates:
 
 - Stop discovery once the relevant dependency path is understood.
 - Stop editing once acceptance criteria are met; avoid opportunistic refactors.
 - Stop verification after relevant tests/type/lint checks pass unless the change is high risk.
-
-If scope expands, explicitly reclassify the task rather than silently consuming more context.
+- If another file, test, or reasoning step is required for correctness, continue without interrupting the user.
+- If scope expands, reclassify internally and keep moving; do not request permission just because the initial budget was too small.
 
 ## 4. Plan economically
 
@@ -173,9 +186,23 @@ When useful, end with a compact **Usage choices** note containing only actionabl
 
 Do not clutter every answer with quota commentary if the skill is operating successfully in the background.
 
-## 12. Optional helper scripts
+## 12. Optional local observability
+
+The `cqo` CLI is optional. It provides task-level classification, soft budgets, a local journal, and a local audit:
+
+- `cqo start <task>`
+- `cqo status`
+- `cqo audit`
+- `cqo history`
+
+The journal is local-only under `~/.cqo` (or `CQO_HOME`). It does not inspect private account pages or estimate hidden quota.
+
+**Never run `cqo` automatically just to collect analytics.** The CLI is an inspection layer, not a runtime dependency. If the user did not opt into a CQO session, normal Skill behavior continues with zero CLI overhead.
+
+## 13. Optional helper scripts
 
 - `scripts/repo_snapshot.py --compact` — compact project map without reading the whole repo.
 - `scripts/change_scope.py` — summarize current Git change surface and suggest verification scope.
+- `scripts/cqo.py` — optional zero-network local CLI for task-level budgeting and auditing.
 
-Use scripts only when they save model context/tool calls; do not run them ritualistically.
+Use scripts only when they save model context/tool calls or the user explicitly wants observability; do not run them ritualistically.
