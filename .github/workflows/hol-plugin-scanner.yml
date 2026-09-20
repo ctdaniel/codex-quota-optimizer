@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1632c03cb840ab0401744e2d40 # v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: HOL Plugin Scanner
         uses: hashgraph-online/ai-plugin-scanner-action@1c7b18e191376dd17550d4bff41fd8c9f71e4ca8
