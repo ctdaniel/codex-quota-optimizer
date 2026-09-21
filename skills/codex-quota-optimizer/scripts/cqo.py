@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import uuid
@@ -17,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 
 HIGH_RISK_TERMS = {
     "security", "auth", "authentication", "authorization", "permission",
@@ -386,8 +387,18 @@ def print_audit(audit: dict[str, Any] | None) -> None:
     repo = audit["repo_at_audit"]
     print(f"CQO audit {audit['id']} · completed")
     print(f"Task: {audit['size']} · Risk: {audit['risk']} · Mode: {audit['mode']}")
-    print(f"Current repository change surface: {repo['changed_file_count']} file(s)")
-    print("CQO overhead: 0 network requests · 0 blocking gates · 0 automatic model calls")
+    print("Observed:")
+    print(f"- Local repository change surface: {repo['changed_file_count']} file(s)")
+    if repo.get("branch"):
+        print(f"- Branch: {repo['branch']}")
+    print("CQO guarantees:")
+    print("- No forced repository-wide scan")
+    print("- No forced full test suite")
+    print("- No automatic subagent")
+    print("- No automatic model escalation")
+    print("- 0 CQO network requests · 0 blocking gates · 0 automatic model calls")
+    if audit.get("note"):
+        print(f"Note: {audit['note']}")
     print(f"Recorded locally in {history_path()}")
 
 
@@ -404,6 +415,91 @@ def print_history(items: list[dict[str, Any]]) -> None:
             f"{status}  "
             f"{item.get('task', '')}"
         )
+
+
+
+def doctor_report() -> dict[str, Any]:
+    """Inspect the local CQO setup without network access."""
+    skill_root = Path(__file__).resolve().parents[1]
+    skill_file = skill_root / "SKILL.md"
+
+    home_ok = False
+    home_error: str | None = None
+    try:
+        ensure_home()
+        probe = cqo_home() / ".doctor-write-test"
+        probe.write_text("ok\n", encoding="utf-8")
+        probe.unlink()
+        home_ok = True
+    except OSError as exc:
+        home_error = str(exc)
+
+    python_ok = sys.version_info >= (3, 10)
+    cli_path = shutil.which("cqo")
+    git_path = shutil.which("git")
+
+    required_ok = python_ok and skill_file.is_file() and home_ok
+    return {
+        "version": VERSION,
+        "ok": required_ok,
+        "python": {
+            "version": ".".join(map(str, sys.version_info[:3])),
+            "ok": python_ok,
+            "required": ">=3.10",
+        },
+        "skill": {
+            "root": str(skill_root),
+            "skill_md": str(skill_file),
+            "ok": skill_file.is_file(),
+        },
+        "journal": {
+            "home": str(cqo_home()),
+            "writable": home_ok,
+            "error": home_error,
+        },
+        "git": {
+            "path": git_path,
+            "available": bool(git_path),
+            "required": False,
+        },
+        "cli": {
+            "path": cli_path,
+            "on_path": bool(cli_path),
+            "required": False,
+        },
+        "active_session": bool(read_current()),
+        "network_checks": 0,
+    }
+
+
+def print_doctor(report: dict[str, Any]) -> None:
+    mark = lambda ok: "OK" if ok else "WARN"
+    print(f"CQO doctor · v{report['version']}")
+    print(
+        f"[{mark(report['python']['ok'])}] Python "
+        f"{report['python']['version']} (required {report['python']['required']})"
+    )
+    print(
+        f"[{mark(report['skill']['ok'])}] Skill "
+        f"{report['skill']['skill_md']}"
+    )
+    print(
+        f"[{mark(report['journal']['writable'])}] Local journal "
+        f"{report['journal']['home']}"
+    )
+    print(
+        f"[{mark(report['git']['available'])}] Git "
+        f"{report['git']['path'] or 'not found'} (optional for CLI)"
+    )
+    print(
+        f"[{mark(report['cli']['on_path'])}] cqo shortcut "
+        f"{report['cli']['path'] or 'not on PATH'} (optional)"
+    )
+    print(
+        "Zero-friction check: 0 network requests · "
+        "0 model calls · 0 blocking gates"
+    )
+    print("Required setup: ready" if report["ok"] else "Required setup: needs attention")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -448,6 +544,12 @@ def build_parser() -> argparse.ArgumentParser:
     history.add_argument("--limit", type=int, default=10)
     history.add_argument("--json", action="store_true")
 
+    doctor = sub.add_parser(
+        "doctor",
+        help="Check local CQO installation and optional CLI setup.",
+    )
+    doctor.add_argument("--json", action="store_true")
+
     return parser
 
 
@@ -482,6 +584,14 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print_history(items)
         return 0
+
+    if args.command == "doctor":
+        report = doctor_report()
+        if args.json:
+            print_json(report)
+        else:
+            print_doctor(report)
+        return 0 if report["ok"] else 1
 
     return 2
 

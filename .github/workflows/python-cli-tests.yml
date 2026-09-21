@@ -27,3 +27,4 @@ jobs:
           python3 skills/codex-quota-optimizer/scripts/cqo.py status
           python3 skills/codex-quota-optimizer/scripts/cqo.py audit --note ci-smoke
           python3 skills/codex-quota-optimizer/scripts/cqo.py history --limit 1
+          python3 skills/codex-quota-optimizer/scripts/cqo.py doctor

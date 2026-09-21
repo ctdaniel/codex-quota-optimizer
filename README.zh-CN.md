@@ -58,7 +58,7 @@ v0.2 在原有 Skill 策略上增加了一个轻量的 Usage Governor，但不�
 | **Soft Session Budget** | 给探索、推理、验证、Subagent 提供建议范围，但绝不阻塞任务 |
 | **Local Usage Journal** | 只在本地 `~/.cqo` 保存任务级信息；无 Telemetry、不抓私人账户数据 |
 | **Usage Audit** | 记录本地改动面和 CQO 的策略约束，不虚构 Token 节省比例 |
-| **`cqo` CLI** | 可选的 `start / status / audit / history` 查看层；Codex 不依赖它运行 |
+| **`cqo` CLI** | 可选的 `start / status / audit / history / doctor` 查看层；Codex 不依赖它运行 |
 
 CQO 自身不会额外发起模型调用、不会访问网络、不会设置阻塞式 Budget Gate，也不会自动拉起 Subagent。只要正确性需要更多上下文或验证，Codex 应直接继续完成任务。
 
@@ -295,6 +295,7 @@ cqo start "修复结算页 Bug" --mode economy
 cqo status
 cqo audit
 cqo history
+cqo doctor
 ```
 
 它只使用 Python 标准库，不访问网络，任务级状态保存在 `~/.cqo`（或 `CQO_HOME`）。
@@ -304,6 +305,8 @@ cqo history
 ```bash
 python ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py status
 ```
+
+你可以随时运行 `cqo doctor` 检查 Python 版本、Skill 安装、本地 Journal 写入权限、Git 是否可用，以及 `cqo` 快捷命令是否已进入 PATH；整个检查过程 0 网络请求。
 
 Repository Snapshot 与 Change Scope 两个脚本同样只在本地运行，不上传项目数据。
 
@@ -367,7 +370,7 @@ codex-quota-optimizer/
 - [x] **Usage Audit**：任务结束输出诚实的本地任务级观察
 - [ ] 自动识别不同框架最合适的定向测试
 - [x] Plugin 打包：同时支持 Skill 直装与 Plugin 分发
-- [ ] HOL Codex Plugin Catalog 收录
+- [x] HOL Codex Plugin Catalog 收录
 - [x] Skills CLI 一行命令安装
 - [ ] Benchmark：对比默认工作流和优化工作流
 

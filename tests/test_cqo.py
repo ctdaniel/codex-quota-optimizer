@@ -63,6 +63,16 @@ class CqoTests(unittest.TestCase):
                 self.assertEqual(len(history), 1)
                 self.assertEqual(history[0]["note"], "unit-test")
 
+    def test_doctor_reports_required_setup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.dict(os.environ, {"CQO_HOME": tmp}, clear=False):
+                report = cqo.doctor_report()
+                self.assertTrue(report["python"]["ok"])
+                self.assertTrue(report["skill"]["ok"])
+                self.assertTrue(report["journal"]["writable"])
+                self.assertEqual(report["network_checks"], 0)
+                self.assertTrue(report["ok"])
+
 
 if __name__ == "__main__":
     unittest.main()

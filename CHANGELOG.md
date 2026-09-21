@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented here.
 
+## [0.2.1] - 2026-09-21
+
+### Added
+- `cqo doctor` for zero-network local installation diagnostics.
+- Doctor checks Python compatibility, Skill presence, journal writability, Git availability, CLI PATH visibility, and active-session state.
+
+### Changed
+- `cqo audit` output now separates observed local facts from CQO policy guarantees for clearer, more honest reporting.
+- README now reflects successful HOL Codex Plugin Catalog listing.
+
 ## [0.2.0] - 2026-09-20
 
 ### Added
