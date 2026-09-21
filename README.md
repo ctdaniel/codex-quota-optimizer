@@ -322,6 +322,29 @@ These are **behavioral budgets**, not fake quota counters.
 
 ---
 
+## Benchmarking without fake savings
+
+v0.2.2 adds a paired benchmark framework for comparing **baseline Codex vs CQO** without inventing hidden-token or quota-savings numbers.
+
+Two modes are supported:
+
+- **Controlled** — same starting model/reasoning on both sides, isolating context, verification, repeated exploration and Subagent discipline.
+- **Full-policy** — CQO may use its own routing policy; the actual model role/reasoning must be recorded.
+
+The quality gate comes first: **a matched pair only contributes efficiency deltas when both runs pass the same acceptance criteria**.
+
+Observable metrics can include files inspected, searches, focused/broad checks, Subagents, model escalations, repeated reads, and wall time. Unknown values are omitted instead of guessed.
+
+```bash
+python benchmarks/report.py path/to/results.jsonl --format markdown
+```
+
+See the full [Benchmark methodology](./benchmarks/README.md) · [中文说明](./benchmarks/README.zh-CN.md).
+
+> The project intentionally ships the measurement method before publishing savings claims.
+
+---
+
 ## What it deliberately does not do
 
 - ❌ bypass or evade OpenAI usage limits
@@ -351,7 +374,8 @@ codex-quota-optimizer/
 │           ├── cqo.py             # optional local usage governor CLI
 │           ├── change_scope.py
 │           └── repo_snapshot.py
-├── tests/                         # standard-library CLI tests
+├── benchmarks/                    # paired baseline/CQO benchmark framework
+├── tests/                         # standard-library CLI + benchmark tests
 ├── assets/                        # Plugin icon + README visuals
 ├── examples/
 ├── install.sh                     # installs Skill + optional cqo shortcut
@@ -370,7 +394,8 @@ codex-quota-optimizer/
 - [x] Plugin packaging for dual Skill / Plugin distribution
 - [x] HOL Codex Plugin Catalog listing
 - [x] One-line Skills CLI installation
-- [ ] Benchmark suite comparing default and optimized workflows
+- [x] Paired **Benchmark Framework** comparing baseline and CQO behavior
+- [ ] Publish measured real-world benchmark case set
 
 Ideas and PRs are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
