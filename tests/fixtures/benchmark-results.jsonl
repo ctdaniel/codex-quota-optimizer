@@ -1,0 +1,2 @@
+{"case_id":"test-case","pair_id":"p1","variant":"baseline","benchmark_mode":"controlled","acceptance_passed":true,"files_inspected":8,"broad_checks":1,"subagents":1}
+{"case_id":"test-case","pair_id":"p1","variant":"cqo","benchmark_mode":"controlled","acceptance_passed":true,"files_inspected":3,"broad_checks":0,"subagents":0}

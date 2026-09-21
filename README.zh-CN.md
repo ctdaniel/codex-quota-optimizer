@@ -324,6 +324,29 @@ Repository Snapshot 与 Change Scope 两个脚本同样只在本地运行，不�
 
 ---
 
+## Benchmark｜先保证质量，再谈节省
+
+v0.2.2 加入了一套 Baseline Codex vs CQO 的成对 Benchmark 框架，重点是比较**可直接观察的 Agent 行为**，而不是猜隐藏 Token 或额度节省百分比。
+
+支持两种模式：
+
+- **Controlled**：两边使用相同起始模型 / reasoning，主要隔离测试上下文、验证范围、重复探索和 Subagent 克制。
+- **Full-policy**：允许 CQO 使用自己的路由策略，但必须记录实际模型角色 / reasoning。
+
+最重要的 Gate 是质量：**只有 Baseline 和 CQO 都通过同一套验收标准，该 Pair 才会进入效率 Delta。**
+
+可以记录的指标包括读取文件数、搜索次数、定向 / 全量检查次数、Subagent、模型升级、重复读取和 Wall time；不知道的数据直接省略，不猜。
+
+```bash
+python benchmarks/report.py path/to/results.jsonl --format markdown
+```
+
+完整方法见 [Benchmark 中文说明](./benchmarks/README.zh-CN.md) · [English](./benchmarks/README.md)。
+
+> 先发布可复现的测量方法，再发布节省结论。
+
+---
+
 ## 它明确不会做什么
 
 - ❌ 绕过或规避 OpenAI 使用限制
@@ -353,7 +376,8 @@ codex-quota-optimizer/
 │           ├── cqo.py             # 可选本地 Usage Governor CLI
 │           ├── change_scope.py
 │           └── repo_snapshot.py
-├── tests/                         # Python 标准库 CLI 测试
+├── benchmarks/                    # Baseline / CQO 成对 Benchmark 框架
+├── tests/                         # Python 标准库 CLI + Benchmark 测试
 ├── assets/                        # Plugin 图标 + README 视觉资源
 ├── examples/
 ├── install.sh                     # 安装 Skill + 可选 cqo 快捷命令
@@ -372,7 +396,8 @@ codex-quota-optimizer/
 - [x] Plugin 打包：同时支持 Skill 直装与 Plugin 分发
 - [x] HOL Codex Plugin Catalog 收录
 - [x] Skills CLI 一行命令安装
-- [ ] Benchmark：对比默认工作流和优化工作流
+- [x] Baseline / CQO 成对 **Benchmark Framework**
+- [ ] 发布真实测量的 Real-world Benchmark Case 集合
 
 欢迎提交 Issue / PR。参见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
 

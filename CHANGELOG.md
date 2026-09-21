@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented here.
 
+## [0.2.2] - 2026-09-21
+
+### Added
+- Paired Baseline-vs-CQO benchmark framework with controlled and full-policy modes.
+- Honest benchmark result schema and case-study template.
+- Local benchmark report generator with text, Markdown, and JSON output.
+- Acceptance-gated comparisons: efficiency deltas are only calculated when both runs pass the same acceptance criteria.
+- Benchmark tests and CI smoke coverage.
+- English and Simplified Chinese benchmark methodology.
+
+### Changed
+- CQO CLI/package version aligned to 0.2.2.
+- Roadmap now separates the benchmark framework from future published real-world measurements.
+
 ## [0.2.1] - 2026-09-21
 
 ### Added

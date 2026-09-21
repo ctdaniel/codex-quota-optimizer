@@ -1,6 +1,6 @@
 {
   "name": "codex-quota-optimizer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A zero-friction Codex usage governor with task-aware routing, soft budgets, focused context, local audits, and layered verification.",
   "author": {
     "name": "Daniel Chen",

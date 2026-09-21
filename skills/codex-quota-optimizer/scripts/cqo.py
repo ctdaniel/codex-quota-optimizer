@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.2.1"
+VERSION = "0.2.2"
 
 HIGH_RISK_TERMS = {
     "security", "auth", "authentication", "authorization", "permission",
