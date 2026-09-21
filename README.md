@@ -58,7 +58,7 @@ v0.2 turns the original Skill policy into a lightweight usage governor while kee
 | **Soft Session Budget** | Suggests discovery, reasoning, verification and subagent scope without blocking execution |
 | **Local Usage Journal** | Stores task-level metadata locally under `~/.cqo`; no telemetry and no private account scraping |
 | **Usage Audit** | Records local change surface and CQO policy guardrails without inventing token-savings percentages |
-| **`cqo` CLI** | Optional `start / status / audit / history` inspection layer; Codex does not depend on it |
+| **`cqo` CLI** | Optional `start / status / audit / history / doctor` inspection layer; Codex does not depend on it |
 
 CQO itself adds **no automatic model call, no network request, no blocking budget gate, and no automatic subagent**. If correctness requires more context or verification than the suggested budget, Codex should simply continue.
 
@@ -293,6 +293,7 @@ cqo start "Fix the checkout bug" --mode economy
 cqo status
 cqo audit
 cqo history
+cqo doctor
 ```
 
 It uses the Python standard library only, performs no network requests, and writes task-level state to `~/.cqo` (or `CQO_HOME`).
@@ -302,6 +303,8 @@ If the `cqo` shortcut is not installed, run:
 ```bash
 python ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py status
 ```
+
+Run `cqo doctor` any time to check Python compatibility, Skill installation, local journal writability, Git availability, and whether the `cqo` shortcut is on PATH — with zero network checks.
 
 The repository snapshot and change-scope scripts are also local-only and dependency-light.
 
@@ -365,7 +368,7 @@ codex-quota-optimizer/
 - [x] End-of-task **Usage Audit** with honest task-level local observations
 - [ ] Framework-aware focused-test discovery
 - [x] Plugin packaging for dual Skill / Plugin distribution
-- [ ] HOL Codex Plugin Catalog listing
+- [x] HOL Codex Plugin Catalog listing
 - [x] One-line Skills CLI installation
 - [ ] Benchmark suite comparing default and optimized workflows
 
