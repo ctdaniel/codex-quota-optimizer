@@ -1,0 +1,29 @@
+name: Python CLI Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: CLI smoke test
+        env:
+          CQO_HOME: ${{ runner.temp }}/cqo-home
+        run: |
+          python3 skills/codex-quota-optimizer/scripts/cqo.py start Fix checkout bug --mode economy
+          python3 skills/codex-quota-optimizer/scripts/cqo.py status
+          python3 skills/codex-quota-optimizer/scripts/cqo.py audit --note ci-smoke
+          python3 skills/codex-quota-optimizer/scripts/cqo.py history --limit 1

@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "codex-quota-optimizer",
-  "version": "0.1.0",
-  "description": "Reduce avoidable Codex usage with task-aware model routing, focused context, minimal changes, and layered verification.",
+  "version": "0.2.0",
+  "description": "A zero-friction Codex usage governor with task-aware routing, soft budgets, focused context, local audits, and layered verification.",
   "author": {
     "name": "Daniel Chen",
     "url": "https://github.com/ctdaniel"

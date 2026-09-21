@@ -46,6 +46,24 @@ It does **not** bypass limits, scrape private quota data, or weaken verification
 
 ---
 
+## v0.2 — Zero-friction usage governor
+
+> **The optimizer should not become the overhead.**
+
+v0.2 turns the original Skill policy into a lightweight usage governor while keeping normal Codex execution unobstructed.
+
+| v0.2 capability | How it behaves |
+|---|---|
+| **Task Classifier** | Classifies XS → XL inside the existing reasoning turn; the optional CLI can also classify locally with heuristics |
+| **Soft Session Budget** | Suggests discovery, reasoning, verification and subagent scope without blocking execution |
+| **Local Usage Journal** | Stores task-level metadata locally under `~/.cqo`; no telemetry and no private account scraping |
+| **Usage Audit** | Records local change surface and CQO policy guardrails without inventing token-savings percentages |
+| **`cqo` CLI** | Optional `start / status / audit / history` inspection layer; Codex does not depend on it |
+
+CQO itself adds **no automatic model call, no network request, no blocking budget gate, and no automatic subagent**. If correctness requires more context or verification than the suggested budget, Codex should simply continue.
+
+---
+
 ## Install
 
 ### Option A — One-line Skill install · recommended
@@ -58,6 +76,16 @@ npx skills add ctdaniel/codex-quota-optimizer --skill codex-quota-optimizer
 
 This is the fastest path for Codex users and also makes the Skill discoverable through the wider Skills ecosystem.
 
+The Skill works immediately; the local `cqo` CLI is optional. If you also want the short `cqo` command after a Skills CLI install:
+
+```bash
+mkdir -p ~/.local/bin
+chmod +x ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py
+ln -sfn ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py ~/.local/bin/cqo
+```
+
+If `~/.local/bin` is not in your shell `PATH`, you can still run the script directly with Python.
+
 ### Option B — Direct global install
 
 Use the repository installer across all of your Codex projects:
@@ -68,10 +96,16 @@ cd codex-quota-optimizer
 ./install.sh
 ```
 
-It installs to:
+It installs the Skill to:
 
 ```text
 ~/.agents/skills/codex-quota-optimizer
+```
+
+and creates the optional CLI shortcut at:
+
+```text
+~/.local/bin/cqo
 ```
 
 Codex should detect the Skill automatically. Restart Codex if it does not appear immediately.
@@ -230,9 +264,9 @@ A local change should not automatically pay the cost of Level 4.
 
 ---
 
-## Two small helper tools
+## Local tools
 
-The Skill works without these scripts, but they can reduce repository discovery overhead.
+The Skill works without any helper script. These tools are optional and local-only.
 
 ### Compact repository snapshot
 
@@ -250,7 +284,26 @@ python skills/codex-quota-optimizer/scripts/change_scope.py
 
 Summarizes the current Git change surface and suggests a sensible verification level.
 
-Both scripts are local-only and dependency-light.
+### Optional `cqo` usage governor CLI
+
+The CLI never sits in the Codex runtime path. Use it only when you want local task budgeting/history:
+
+```bash
+cqo start "Fix the checkout bug" --mode economy
+cqo status
+cqo audit
+cqo history
+```
+
+It uses the Python standard library only, performs no network requests, and writes task-level state to `~/.cqo` (or `CQO_HOME`).
+
+If the `cqo` shortcut is not installed, run:
+
+```bash
+python ~/.agents/skills/codex-quota-optimizer/scripts/cqo.py status
+```
+
+The repository snapshot and change-scope scripts are also local-only and dependency-light.
 
 ---
 
@@ -292,9 +345,13 @@ codex-quota-optimizer/
 │       ├── agents/openai.yaml
 │       ├── references/
 │       └── scripts/
+│           ├── cqo.py             # optional local usage governor CLI
+│           ├── change_scope.py
+│           └── repo_snapshot.py
+├── tests/                         # standard-library CLI tests
 ├── assets/                        # Plugin icon + README visuals
 ├── examples/
-├── install.sh                     # installs Skill to ~/.agents/skills
+├── install.sh                     # installs Skill + optional cqo shortcut
 └── README.zh-CN.md
 ```
 
@@ -302,10 +359,10 @@ codex-quota-optimizer/
 
 ## Roadmap
 
-- [ ] Local **Usage Journal** for task-level observations — no private account scraping
-- [ ] **Task Classifier** output: task size, recommended model role, reasoning, verification scope
-- [ ] **Session Budget** for discovery / coding / verification work
-- [ ] End-of-task **Usage Audit** showing avoidable work that was skipped
+- [x] Local **Usage Journal** for task-level observations — no private account scraping
+- [x] **Task Classifier** output: task size, recommended model role, reasoning, verification scope
+- [x] **Soft Session Budget** for discovery / coding / verification work
+- [x] End-of-task **Usage Audit** with honest task-level local observations
 - [ ] Framework-aware focused-test discovery
 - [x] Plugin packaging for dual Skill / Plugin distribution
 - [ ] HOL Codex Plugin Catalog listing
