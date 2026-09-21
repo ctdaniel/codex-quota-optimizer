@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CQO benchmark result",
+  "type": "object",
+  "required": [
+    "case_id",
+    "pair_id",
+    "variant",
+    "benchmark_mode",
+    "acceptance_passed"
+  ],
+  "properties": {
+    "case_id": {"type": "string", "minLength": 1},
+    "pair_id": {"type": "string", "minLength": 1},
+    "variant": {"enum": ["baseline", "cqo"]},
+    "benchmark_mode": {"enum": ["controlled", "full-policy"]},
+    "repo_commit": {"type": "string"},
+    "acceptance_passed": {"type": "boolean"},
+    "model_role": {"type": "string"},
+    "reasoning": {"type": "string"},
+    "files_inspected": {"type": "integer", "minimum": 0},
+    "files_changed": {"type": "integer", "minimum": 0},
+    "searches": {"type": "integer", "minimum": 0},
+    "focused_checks": {"type": "integer", "minimum": 0},
+    "broad_checks": {"type": "integer", "minimum": 0},
+    "subagents": {"type": "integer", "minimum": 0},
+    "model_escalations": {"type": "integer", "minimum": 0},
+    "repeated_reads": {"type": "integer", "minimum": 0},
+    "wall_seconds": {"type": "number", "minimum": 0},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true
+}
